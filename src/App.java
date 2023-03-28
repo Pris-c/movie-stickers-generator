@@ -23,49 +23,50 @@ import java.util.Map;
     
     public class App{
         
-        public static void main (String[] args) throws Exception {
-    
+        public static void printMovie(Map<String,String> filme){
+
+            System.out.println("\u001b[33m" + filme.get("rank") +"ª " + " " + filme.get("title"));
+            System.out.print("Nota: " + filme.get("imDbRating") + " ");
             
+                Double ratingDouble = Double.parseDouble(filme.get("imDbRating"));
+                int ratingInt = (int) Math.round(ratingDouble);
+                for(int i=0; i< ratingInt; i++ ){
+                    System.out.print("💛");
+            }
+            
+            System.out.println("\nClique para acessar poster: \u001b[1m\u001b[0m \n" + "\u001b[3m" + filme.get("image")  + "\n");
+        }
+
+
+        public static void main (String[] args) throws Exception {
             
             //Fazer uma conexão http e buscar os top 250 filmes
-    
+            //String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
             
-            String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-            
+            //Desafio 1: Consumir uma API diferente 
+            String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+
             URI endereco = URI.create(url);
-            
             HttpClient client =  HttpClient.newHttpClient();
-    
             HttpRequest request = HttpRequest.newBuilder(endereco).GET().build(); 		
     
-    
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            
             String body = response.body();
+            //System.out.println(body);
             
-            System.out.println(body);
-            
-            
-            
-            // Extrais os dados de interesse: Título, postes e classificação.   -Parsear os dados
+                        
+            // Extrair os dados de interesse: Título, postes e classificação.   -Parsear os dados
             var parser = new JsonParser();
-            List< Map<String, String> > listaDeFilmes = parser.parse(body);
-            System.out.println(listaDeFilmes);
+            List<Map<String, String>> listaDeFilmes = parser.parse(body);
+            //System.out.println(listaDeFilmes);
 
             //Exibir e manipular os dados
+            System.out.println("The Best Movies Ever");
             for (Map<String,String> filme : listaDeFilmes) {
-                System.out.println("Posição: " + filme.get("rank"));
-                System.out.println("Nota:  " + filme.get("imDbRating"));
-                System.out.println("Filme: " + filme.get("title"));
-                System.out.println("Acessar poster:\n" + filme.get("image")  + "\n");
-                System.out.println("\u2B50");
-               
+                printMovie(filme);
             }
-           
-            
+                       
         }  //Fim main
         
-        
-        
-        } // Fim App
+    } // Fim App
             
