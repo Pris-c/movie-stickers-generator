@@ -1,15 +1,3 @@
-
-	/* IMDb Top 250 Movies
-	
-		1) Fazer uma conexão http e buscar os top 250 filmes
-
-		2) Extrais os dados de interesse: Título, postes e classificação.   -Parsear os dados
-
-		3) Exibir e manipular os dados
-
-	*/
-	   
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -19,10 +7,9 @@ import java.util.List;
 import java.util.Map;
     
     
-    
-    
     public class App{
         
+        //Desafio 2 - Aula 1: Custumização
         public static void printMovie(Map<String,String> filme){
 
             System.out.println("\u001b[33m" + filme.get("rank") +"ª " + " " + filme.get("title"));
@@ -37,14 +24,19 @@ import java.util.Map;
             System.out.println("\nClique para acessar poster: \u001b[1m\u001b[0m \n" + "\u001b[3m" + filme.get("image")  + "\n");
         }
 
-
         public static void main (String[] args) throws Exception {
             
             //Fazer uma conexão http e buscar os top 250 filmes
             //String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
             
-            //Desafio 1: Consumir uma API diferente 
-            String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+            //Desafio 1 - Aula 1set: Consumir uma API diferente 
+            //String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+
+            //Desafio 3 - Aula 1: Utilizar Variáveis de Ambiente
+            String hideUrl = System.getenv("HIDE_URL");
+            String url = ("https://mocki.io/v1/" + hideUrl);
+            System.out.println(hideUrl);
+            
 
             URI endereco = URI.create(url);
             HttpClient client =  HttpClient.newHttpClient();
@@ -52,8 +44,6 @@ import java.util.Map;
     
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
             String body = response.body();
-            //System.out.println(body);
-            
                         
             // Extrair os dados de interesse: Título, postes e classificação.   -Parsear os dados
             var parser = new JsonParser();
@@ -66,7 +56,6 @@ import java.util.Map;
                 printMovie(filme);
             }
                        
-        }  //Fim main
+        }
         
-    } // Fim App
-            
+    } 
