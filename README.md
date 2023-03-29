@@ -13,7 +13,14 @@
   <li>fazer uma conexão HTTP e buscar todos os filmes;</li>
   <li>extrair os dados de interesse (titulo, poster e classificação);</li>
   <li>manipular e exibir dados;</li>
-  <li>personalizar exibição no terminal - em andamento</li>
+  <br>
+     <li><ul>Desafios</li>:
+      <li>utilizar uma outra api;</li>
+      <li>personalizar exibição no terminal;</li>
+      <li>utilizar variáveis de ambiente.</li>
+    </ul>
+</ul>
   
-  
-  </ul>
+<p align="center"> 
+<img src="https://user-images.githubusercontent.com/99100607/228403127-82265ac6-9d64-4606-bda1-f0391be5e43d.PNG"/>
+</p>
