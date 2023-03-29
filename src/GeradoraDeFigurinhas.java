@@ -1,6 +1,6 @@
 import javax.imageio.ImageIO;
 import java.io.File;
-import java.text.Format;
+import java.io.InputStream;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -10,10 +10,16 @@ import java.awt.image.BufferedImage;
 
 public class GeradoraDeFigurinhas {
 
-    public void cria() throws Exception{
+    public void cria(InputStream inputStream, String nomeArquivo) throws Exception{
 
-        //Leitura de imagem
-        BufferedImage imagemOriginal = ImageIO.read(new File("entrada/filme.jpg"));   //**Add throw declaration
+        //Leitura de imagem local
+        //InputStream inputStream = new FileInputStream(new File("entrada/filme.jpg"));
+        
+        //Leitura de imagem por URL
+        /*InputStream inputStream = new URL("https://m.media-amazon.com/images/M/MV5BOGQzZTBjMjQtOTVmMS00NGE5LWEyYmMtOGQ1ZGZjNmRkYjFhXkEyXkFqcGdeQXVyMjUzOTY1NTc@.jpg")
+        .openStream();*/
+
+        BufferedImage imagemOriginal = ImageIO.read(inputStream);
 
         //Cria imagem de transparencia com novo tamanho (em relação à imagem lida)
         int largura = imagemOriginal.getWidth();
@@ -26,7 +32,7 @@ public class GeradoraDeFigurinhas {
 
 
         //Copia imagem original para novaImagem (transparente) criada
-        Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();            //Caneta da imagem
+        Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();            //"Caneta"
         graphics.drawImage(imagemOriginal, 0, 0, null);            //Escrever imagem antiga (poster) na nova (transparente)
 
 
@@ -44,14 +50,9 @@ public class GeradoraDeFigurinhas {
             new File("saida").mkdir();
         }
         //Escrever a nova imagem em um arquivo
-        ImageIO.write(novaImagem, "png", new File("saida/figurinha.png"));
+
+        ImageIO.write(novaImagem, "png", new File("saida/" + nomeArquivo));
         }
 
-
-
-        public static void main(String[] args) throws Exception {
-            var geradora = new GeradoraDeFigurinhas();
-            geradora.cria();
-        }
 
 }
