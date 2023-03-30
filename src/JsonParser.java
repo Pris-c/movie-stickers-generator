@@ -34,7 +34,7 @@ public class JsonParser {
             }
 
             dados.add(atributosItem);
-        }
+        }   
 
         return dados;
     } 

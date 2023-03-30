@@ -1,86 +1,68 @@
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
-import java.util.Map;
-    
-    
-    public class App{
+
+
+public class App{
+
+    static GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
+
+    public static void main (String[] args) throws Exception {
         
-        
+    //Fazer uma conexão http e buscar os top 250 filmes
+    //String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
+    String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
+    ExtratorDeConteudo extrator = new ExtratorDeConteudoDoIMDB();
 
-        //Desafio 2 - Aula 1: Custumização
-        public static void printMovie(Map<String,String> filme){
-
-            System.out.println("\u001b[33m" + filme.get("rank") +"ª " + " " + filme.get("title"));
-            System.out.print("Nota: " + filme.get("imDbRating") + " ");
-            
-                Double ratingDouble = Double.parseDouble(filme.get("imDbRating"));
-                int ratingInt = (int) Math.round(ratingDouble);
-                for(int i=0; i< ratingInt; i++ ){
-                    System.out.print("💛");
-            }
-            
-            System.out.println("\nClique para acessar poster: \u001b[1m\u001b[0m \n" + "\u001b[3m" + filme.get("image")  + "\n");
-        }
-
-
-        static GeradoraDeFigurinhas geradora = new GeradoraDeFigurinhas();
-
-        public static void gerarFigurinha(Map<String,String> filme) throws Exception{
-
-            //Buscando imagem de melhor qualidade
-            String urlImagem = filme.get("image");
-            String[] urlImagemSplited = urlImagem.split("._");
-            String urlImagemMaior = urlImagemSplited[0] + ".png";
-
-            String titulo = filme.get("title");
-
-            InputStream inputStream = new URL(urlImagemMaior).openStream();
-            String nomeArquivo = titulo + ".png";
-
-            geradora.cria(inputStream, nomeArquivo);
-        }
-
-        public static void main (String[] args) throws Exception {
-            
-            //Fazer uma conexão http e buscar os top 250 filmes
-            //String url = "https://raw.githubusercontent.com/alura-cursos/imersao-java-2-api/main/TopMovies.json";
-            
-            //Desafio 1 - Aula 1set: Consumir uma API diferente 
-            String url = "https://mocki.io/v1/9a7c1ca9-29b4-4eb3-8306-1adb9d159060";
-
-            /*Desafio 3 - Aula 1: Utilizar Variáveis de Ambiente
-            String hideUrl = System.getenv("HIDE_URL");
-            String url = ("https://mocki.io/v1/" + hideUrl);
-            System.out.println(hideUrl);*/
-            
-
-            URI endereco = URI.create(url);
-            HttpClient client =  HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder(endereco).GET().build(); 		
     
-            HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-            String body = response.body();
-                        
-            // Extrair os dados de interesse: Título, postes e classificação.   -Parsear os dados
-            var parser = new JsonParser();
-            List<Map<String, String>> listaDeFilmes = parser.parse(body);
-            //System.out.println(listaDeFilmes);
+    //String url = "https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&start_date=2023-02-10&end_date=2023-02-14";
+    //ExtratorDeConteudo extrator = new ExtratorDeConteudoDaNasa();   
+    var http = new ClienteHttp();
+    String json = http.buscaDados(url);
 
-            //Exibir e manipular os dados
-            System.out.println("The Best Movies Ever");
+    //Exibir e manipular os dados
+    List<Conteudo> conteudos = extrator.extraiConteudo(json);
 
-            for (Map<String,String> filme : listaDeFilmes) {
-                //printMovie(filme);
-                System.out.println(filme.get("title"));
-                gerarFigurinha(filme);
-            }
-                       
+
+    //CRIAR FIGURINHA
+    for (int j = 0; j<2; j++) {
+        Conteudo conteudo = conteudos.get(j);
+
+        InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
+        String nomeArquivo = conteudo.getTitulo() + ".png";
+
+        //int ratingInt = (int) Double.parseDouble(conteudo.get("imDbRating"));
+        String textoFigurinha = "FIGURINHA";
+
+        geradora.cria(inputStream, nomeArquivo, textoFigurinha);
+        System.out.println(conteudo.getTitulo());
+    }
+
+
+
+
+
+    //IMPRIMIR
+    /*for (int i = 0; i<10; i++) {
+        //printMovie(conteudo);
+        Map<String, String> conteudo  = listaDeConteudos.get(i);
+
+        String titulo = conteudo.get("title");
+        String nota = conteudo.get("imDbRating");
+
+        System.out.println("\u001b[33m" + conteudo.get("rank") +"ª " + " " + titulo);
+        System.out.print("Nota: " + nota + " ");
+    
+        Double ratingDouble = Double.parseDouble(nota);
+        int ratingInt = (int) Math.round(ratingDouble);
+        for(int y=0; y< ratingInt; y++ ){
+            System.out.print("💛");
         }
-        
-    } 
+        System.out.println("\nClique para acessar poster: \u001b[1m\u001b[0m \n" + "\u001b[3m" + conteudo.get("image")  + "\n");
+    }*/
+
+    
+                    
+    }
+    
+} 
