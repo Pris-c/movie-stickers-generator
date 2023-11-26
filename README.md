@@ -7,7 +7,7 @@
 
 
 <h5>LESSON 01 - CONSUMING AN API OF MOVIES WITH JAVA</h5>
-<p> Application build without the usage of external libraries to consume an API of movies and display the most popular ones, with its posters and ranking</p>
+<p> Application built without the usage of external libraries to consume an API of movies and display the most popular ones, with its posters and ranking</p>
   
 <p align="center"> 
 <img src="https://user-images.githubusercontent.com/99100607/228403127-82265ac6-9d64-4606-bda1-f0391be5e43d.PNG"/>
